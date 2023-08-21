@@ -21,7 +21,30 @@ class ContactController {
   }
 
   // Criar um contato
-  store() {}
+  store(request, response) {
+    const {
+      name, email, phone, category_id,
+    } = request.body;
+
+    if (!name) {
+      response.status(400).json({ error: 'Name is required' });
+    }
+
+    const contactExists = ContactRepository.findByEmail(email);
+
+    if (contactExists) {
+      response.status(400).json({ error: 'This email is already been taken' });
+    }
+
+    const contact = ContactRepository.create({
+      name,
+      email,
+      phone,
+      category_id,
+    });
+
+    response.json(contact);
+  }
 
   // Atualizar um contato
   update() {}

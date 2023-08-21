@@ -18,15 +18,36 @@ let contacts = [
 ];
 
 class ContactRepository {
+  create({
+    name, email, phone, category_id,
+  }) {
+    const newContact = {
+      id: v4(),
+      name,
+      email,
+      phone,
+      category_id,
+    };
+
+    contacts.push(newContact);
+  }
+
   // Busca todos os contatos
   findAll() {
     return contacts;
   }
 
+  // Busca uma contact pelo id
   findById(id) {
     return contacts.find((contact) => contact.id === id);
   }
 
+  // Busca uma contact pelo email
+  findByEmail(email) {
+    return contacts.find((contact) => contact.email === email);
+  }
+
+  // Deleta um contato pelo id
   delete(id) {
     contacts = contacts.filter((contact) => contact.id !== id);
   }
