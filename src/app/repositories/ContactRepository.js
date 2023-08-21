@@ -1,19 +1,19 @@
-const uuid = require('uuid');
+const { v4 } = require('uuid');
 
-const contacts = [
+let contacts = [
   {
-    id: uuid.v4(),
-    name: 'John Doe',
+    id: v4(),
+    name: 'gustavo',
     email: 'gusfelix@gmail.com',
     phone: '123456789',
-    category_id: uuid.v4(),
+    category_id: v4(),
   },
   {
-    id: uuid.v4(),
-    name: 'Jane Doe',
+    id: v4(),
+    name: 'ana',
     email: 'jane@gmail.com',
     phone: '987654321',
-    category_id: uuid.v4(),
+    category_id: v4(),
   },
 ];
 
@@ -21,6 +21,14 @@ class ContactRepository {
   // Busca todos os contatos
   findAll() {
     return contacts;
+  }
+
+  findById(id) {
+    return contacts.find((contact) => contact.id === id);
+  }
+
+  delete(id) {
+    contacts = contacts.filter((contact) => contact.id !== id);
   }
 }
 

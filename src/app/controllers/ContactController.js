@@ -9,7 +9,16 @@ class ContactController {
   }
 
   // Obter um contato
-  show() {}
+  show(request, response) {
+    const { id } = request.params;
+    const contact = ContactRepository.findById(id);
+
+    if (!contact) {
+      return response.status(404).json({ error: 'Contact not found contact' });
+    }
+
+    response.json(contact);
+  }
 
   // Criar um contato
   store() {}
@@ -18,7 +27,19 @@ class ContactController {
   update() {}
 
   // Remover um contato
-  delete() {}
+  delete(request, response) {
+    const { id } = request.params;
+
+    const contact = ContactRepository.findById(id);
+
+    if (!contact) {
+      return response.status(404).json({ error: 'Contact not found contact' });
+    }
+
+    ContactRepository.delete(id);
+    // 204 - No content
+    response.sendStatus(204);
+  }
 }
 
 module.exports = new ContactController();
