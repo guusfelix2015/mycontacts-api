@@ -32,6 +32,20 @@ class ContactRepository {
     contacts.push(newContact);
   }
 
+  update(id, {
+    name, email, phone, category_id,
+  }) {
+    const updatedContact = {
+      id,
+      name,
+      email,
+      phone,
+      category_id,
+    };
+
+    contacts = contacts.map((contact) => (contact.id === id ? updatedContact : contact));
+  }
+
   // Busca todos os contatos
   findAll() {
     return contacts;

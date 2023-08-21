@@ -33,7 +33,7 @@ class ContactController {
     const contactExists = ContactRepository.findByEmail(email);
 
     if (contactExists) {
-      response.status(400).json({ error: 'This email is already been taken' });
+      response.status(400).json({ error: 'This email is already is use' });
     }
 
     const contact = ContactRepository.create({
@@ -47,7 +47,37 @@ class ContactController {
   }
 
   // Atualizar um contato
-  update() {}
+  update(request, response) {
+    const { id } = request.params;
+    const {
+      name, email, phone, category_id,
+    } = request.body;
+
+    const contactExists = ContactRepository.findById(id);
+
+    if (!contactExists) {
+      return response.status(404).json({ error: 'Contact not found contact' });
+    }
+
+    if (!name) {
+      response.status(400).json({ error: 'Name is required' });
+    }
+
+    const contactByEmail = ContactRepository.findByEmail(email);
+
+    if (contactByEmail && contactByEmail.id !== id) {
+      response.status(400).json({ error: 'This email is already is use' });
+    }
+
+    const contact = ContactRepository.update(id, {
+      name,
+      email,
+      phone,
+      category_id,
+    });
+
+    response.json(contact);
+  }
 
   // Remover um contato
   delete(request, response) {
