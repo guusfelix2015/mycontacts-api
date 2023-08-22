@@ -48,13 +48,13 @@ class ContactController {
   }
 
   // Atualizar um contato
-  update(request, response) {
+  async update(request, response) {
     const { id } = request.params;
     const {
       name, email, phone, category_id,
     } = request.body;
 
-    const contactExists = ContactRepository.findById(id);
+    const contactExists = await ContactRepository.findById(id);
 
     if (!contactExists) {
       return response.status(404).json({ error: 'Contact not found contact' });
@@ -64,13 +64,13 @@ class ContactController {
       response.status(400).json({ error: 'Name is required' });
     }
 
-    const contactByEmail = ContactRepository.findByEmail(email);
+    const contactByEmail = await ContactRepository.findByEmail(email);
 
     if (contactByEmail && contactByEmail.id !== id) {
       response.status(400).json({ error: 'This email is already is use' });
     }
 
-    const contact = ContactRepository.update(id, {
+    const contact = await ContactRepository.update(id, {
       name,
       email,
       phone,
