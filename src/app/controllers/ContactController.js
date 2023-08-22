@@ -21,7 +21,7 @@ class ContactController {
   }
 
   // Criar um contato
-  store(request, response) {
+  async store(request, response) {
     const {
       name, email, phone, category_id,
     } = request.body;
@@ -36,14 +36,14 @@ class ContactController {
       response.status(400).json({ error: 'This email is already is use' });
     }
 
-    const contact = ContactRepository.create({
+    const contact = await ContactRepository.create({
       name,
       email,
       phone,
       category_id,
     });
 
-    response.json(contact);
+    return response.json(contact);
   }
 
   // Atualizar um contato
