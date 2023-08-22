@@ -49,18 +49,26 @@ class ContactRepository {
   }
 
   // Busca todos os contatos
-  findAll() {
-    return contacts;
+  async findAll() {
+    const rows = await db.query('SELECT * FROM contacts');
+
+    return rows;
   }
 
   // Busca uma contact pelo id
-  findById(id) {
-    return contacts.find((contact) => contact.id === id);
+  async findById(id) {
+    const [row] = await db.query('SELECT * FROM contacts WHERE id = $1', [id]);
+
+    return row;
   }
 
   // Busca uma contact pelo email
-  findByEmail(email) {
-    return contacts.find((contact) => contact.email === email);
+  async findByEmail(email) {
+    const [row] = await db.query('SELECT * FROM contacts WHERE email = $1', [
+      email,
+    ]);
+
+    return row;
   }
 
   // Deleta um contato pelo id

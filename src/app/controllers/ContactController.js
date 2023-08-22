@@ -2,16 +2,16 @@ const ContactRepository = require('../repositories/ContactRepository');
 
 class ContactController {
   // Listar todos os contatos
-  index(request, response) {
-    const contacts = ContactRepository.findAll();
+  async index(request, response) {
+    const contacts = await ContactRepository.findAll();
 
     response.json(contacts);
   }
 
   // Obter um contato
-  show(request, response) {
+  async show(request, response) {
     const { id } = request.params;
-    const contact = ContactRepository.findById(id);
+    const contact = await ContactRepository.findById(id);
 
     if (!contact) {
       return response.status(404).json({ error: 'Contact not found contact' });
@@ -30,7 +30,7 @@ class ContactController {
       response.status(400).json({ error: 'Name is required' });
     }
 
-    const contactExists = ContactRepository.findByEmail(email);
+    const contactExists = await ContactRepository.findByEmail(email);
 
     if (contactExists) {
       response.status(400).json({ error: 'This email is already is use' });
