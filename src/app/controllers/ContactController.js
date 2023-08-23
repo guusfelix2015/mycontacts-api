@@ -6,7 +6,7 @@ class ContactController {
     const { orderBy } = request.query;
     const contacts = await ContactRepository.findAll(orderBy);
 
-    response.json(contacts);
+    return response.json(contacts);
   }
 
   // Obter um contato
@@ -18,7 +18,7 @@ class ContactController {
       return response.status(404).json({ error: 'Contact not found contact' });
     }
 
-    response.json(contact);
+    return response.json(contact);
   }
 
   // Criar um contato
@@ -77,7 +77,7 @@ class ContactController {
       category_id,
     });
 
-    response.json(contact);
+    return response.json(contact);
   }
 
   // Remover um contato
