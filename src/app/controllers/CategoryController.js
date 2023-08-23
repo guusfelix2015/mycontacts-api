@@ -29,6 +29,27 @@ class CategoryController {
     return response.json(category);
   }
 
+  async update(request, response) {
+    const { id } = request.params;
+    const { name } = request.body;
+
+    const category = await CategoriesRepository.findById(id);
+
+    if (!name) {
+      return response.status(400).json({ error: 'Name is required' });
+    }
+
+    if (!category) {
+      return response.status(404).json({ error: 'Category not found' });
+    }
+
+    const updatedCategory = await CategoriesRepository.update(id, {
+      name,
+    });
+
+    return response.json(updatedCategory);
+  }
+
   async delete(request, response) {
     const { id } = request.params;
 
