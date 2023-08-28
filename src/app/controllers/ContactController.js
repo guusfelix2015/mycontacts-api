@@ -44,7 +44,7 @@ class ContactController {
       category_id,
     });
 
-    return response.json(contact);
+    return response.status(200).json(contact);
   }
 
   // Atualizar um contato
