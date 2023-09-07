@@ -1,23 +1,19 @@
-const db = require('../../database');
+const db = require("../../database");
 
 class ContactRepository {
-  async create({
-    name, email, phone, category_id,
-  }) {
+  async create({ name, email, phone, category_id }) {
     const [row] = await db.query(
       `
       INSERT INTO contacts(name, email, phone, category_id)
       VALUES($1, $2, $3, $4)
       RETURNING *
     `,
-      [name, email, phone, category_id],
+      [name, email, phone, category_id]
     );
     return row;
   }
 
-  async update(id, {
-    name, email, phone, category_id,
-  }) {
+  async update(id, { name, email, phone, category_id }) {
     const [row] = await db.query(
       `
       UPDATE contacts
@@ -25,20 +21,20 @@ class ContactRepository {
       WHERE id = $5
       RETURNING *
     `,
-      [name, email, phone, category_id, id],
+      [name, email, phone, category_id, id]
     );
 
     return row;
   }
 
   // Busca todos os contatos
-  async findAll(orderBy = 'ASC') {
-    const direction = orderBy.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+  async findAll(orderBy = "ASC") {
+    const direction = orderBy.toUpperCase() === "DESC" ? "DESC" : "ASC";
     const rows = await db.query(
       `SELECT contacts.*, categories.name AS category_name
       FROM contacts
       LEFT JOIN categories ON categories.id = contacts.category_id
-      ORDER BY contacts.name ${direction}`,
+      ORDER BY contacts.name ${direction}`
     );
 
     return rows;
@@ -46,14 +42,21 @@ class ContactRepository {
 
   // Busca uma contact pelo id
   async findById(id) {
-    const [row] = await db.query('SELECT * FROM contacts WHERE id = $1', [id]);
+    const [row] = await db.query(
+      `
+    SELECT contacts.*, categories.name AS category_name
+    FROM contacts
+    LEFT JOIN categories ON categories.id = contacts.category_id
+    WHERE contacts.id = $1`,
+      [id]
+    );
 
     return row;
   }
 
   // Busca uma contact pelo email
   async findByEmail(email) {
-    const [row] = await db.query('SELECT * FROM contacts WHERE email = $1', [
+    const [row] = await db.query("SELECT * FROM contacts WHERE email = $1", [
       email,
     ]);
 
@@ -62,7 +65,7 @@ class ContactRepository {
 
   // Deleta um contato pelo id
   async delete(id) {
-    const deleteOp = await db.query('DELETE FROM contacts WHERE id = $1', [id]);
+    const deleteOp = await db.query("DELETE FROM contacts WHERE id = $1", [id]);
     return deleteOp;
   }
 }
